@@ -34,7 +34,13 @@ fn run(opts: &Opts) -> io::Result<()> {
     let manifest = read_manifest(&opts.manifest)?;
 
     for (name, hash) in manifest.entries {
-        let actual = get_actual_hash(&target, &name)?;
+        let path = target.join(&name);
+        if !path.exists() {
+            eprintln!("{} {}", "not found".yellow(), &name);
+            continue;
+        }
+
+        let actual = get_actual_hash(&path)?;
         if hash != actual {
             eprintln!("{} {}", "mismatch".red(), name);
         }
@@ -43,10 +49,7 @@ fn run(opts: &Opts) -> io::Result<()> {
     Ok(())
 }
 
-fn get_actual_hash(base: &Path, name: &str) -> io::Result<String> {
-    let name = Path::new(name);
-    let path = base.join(name);
-
+fn get_actual_hash(path: &Path) -> io::Result<String> {
     let mut reader = File::open(dbg!(path))?;
     let mut hasher = blake3::Hasher::new();
 
