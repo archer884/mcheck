@@ -32,8 +32,11 @@ fn run(opts: &Opts) -> io::Result<()> {
 
     let target = target_dir(&opts.manifest)?;
     let manifest = read_manifest(&opts.manifest)?;
+    
+    let mut entries: Vec<_> = manifest.entries.into_iter().collect();
+    entries.sort();
 
-    for (name, hash) in manifest.entries {
+    for (name, hash) in entries {
         let path = target.join(&name);
         if !path.exists() {
             eprintln!("{} {}", "not found".yellow(), &name);
