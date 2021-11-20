@@ -50,7 +50,7 @@ fn run(opts: &Opts) -> io::Result<()> {
 }
 
 fn get_actual_hash(path: &Path) -> io::Result<String> {
-    let mut reader = File::open(dbg!(path))?;
+    let mut reader = File::open(path)?;
     let mut hasher = blake3::Hasher::new();
 
     io::copy(&mut reader, &mut hasher)?;
