@@ -45,7 +45,7 @@ fn run(opts: &Opts) -> io::Result<()> {
 
         let actual = get_actual_hash(&path)?;
         if hash != actual {
-            eprintln!("{} {}", "mismatch".red(), name);
+            eprintln!("{}  {}", "mismatch".red(), name);
         }
     }
 
