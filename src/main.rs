@@ -1,6 +1,6 @@
 use std::{
     fs::{self, File},
-    io::{self, BufReader},
+    io,
     path::{Path, PathBuf},
 };
 
@@ -47,7 +47,7 @@ fn get_actual_hash(base: &Path, name: &str) -> io::Result<String> {
     let name = Path::new(name);
     let path = base.join(name);
 
-    let mut reader = File::open(path).map(BufReader::new)?;
+    let mut reader = File::open(dbg!(path))?;
     let mut hasher = blake3::Hasher::new();
 
     io::copy(&mut reader, &mut hasher)?;
