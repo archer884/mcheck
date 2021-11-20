@@ -39,13 +39,15 @@ fn run(opts: &Opts) -> io::Result<()> {
     for (name, hash) in entries {
         let path = target.join(&name);
         if !path.exists() {
-            eprintln!("{} {}", "not found".yellow(), &name);
+            println!("{} {}", "not found".yellow(), &name);
             continue;
         }
 
         let actual = get_actual_hash(&path)?;
-        if hash != actual {
-            eprintln!("{}  {}", "mismatch".red(), name);
+        if hash == actual {
+            println!("{}      {}", "good".green(), name);
+        } else {
+            println!("{}  {}", "mismatch".red(), name);
         }
     }
 
