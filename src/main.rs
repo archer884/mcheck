@@ -11,6 +11,10 @@ use serde::Deserialize;
 #[derive(Clone, Debug, Parser)]
 struct Opts {
     manifest: Option<String>,
+    
+    /// keep manifest file after successful check
+    #[clap(short, long)]
+    keep: bool,
 }
 
 impl Opts {
@@ -64,6 +68,7 @@ fn run(opts: &Opts) -> io::Result<()> {
 
     if !has_error {
         println!("{}", "Ok".green());
+        fs::remove_file(path)?;
     }
 
     Ok(())
