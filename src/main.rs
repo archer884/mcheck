@@ -44,6 +44,14 @@ fn run(opts: &Opts) -> io::Result<()> {
     use owo_colors::OwoColorize;
 
     let path = opts.manifest_path();
+
+    if !path.exists() {
+        return Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "manifest not present",
+        ));
+    }
+
     let target = target_dir(&path)?;
     let manifest = read_manifest(path)?;
 
@@ -68,7 +76,7 @@ fn run(opts: &Opts) -> io::Result<()> {
 
     if !has_error {
         println!("{}", "Ok".green());
-        
+
         if !opts.keep {
             fs::remove_file(path)?;
         }
