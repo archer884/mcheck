@@ -36,19 +36,24 @@ fn run(opts: &Opts) -> io::Result<()> {
     let mut entries: Vec<_> = manifest.entries.into_iter().collect();
     entries.sort();
 
+    let mut has_error = false;
     for (name, hash) in entries {
         let path = target.join(&name);
         if !path.exists() {
             println!("{} {}", "not found".yellow(), &name);
+            has_error = true;
             continue;
         }
 
         let actual = get_actual_hash(&path)?;
-        if hash == actual {
-            println!("{}      {}", "good".green(), name);
-        } else {
+        if hash != actual {
             println!("{}  {}", "mismatch".red(), name);
+            has_error = true;
         }
+    }
+
+    if !has_error {
+        println!("{}", "Ok".green());
     }
 
     Ok(())
