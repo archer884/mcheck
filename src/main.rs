@@ -5,13 +5,13 @@ use std::{
 };
 
 use clap::Parser;
-use hashbrown::HashMap;
+use indexmap::IndexMap;
 use serde::Deserialize;
 
 #[derive(Clone, Debug, Parser)]
 struct Opts {
     manifest: Option<String>,
-    
+
     /// keep manifest file after successful check
     #[clap(short, long)]
     keep: bool,
@@ -29,7 +29,7 @@ impl Opts {
 #[derive(Debug, Default, Deserialize)]
 #[serde(transparent)]
 struct Manifest {
-    entries: HashMap<String, String>,
+    entries: IndexMap<String, String>,
 }
 
 fn main() {

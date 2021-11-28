@@ -1,6 +1,6 @@
 [package]
 name = "mcheck"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 blake3 = "1.2.0"
 clap = { git = "https://github.com/clap-rs/clap" }
-hashbrown = { version = "0.11.2", features = ["serde"] }
+indexmap = { version = "1.7.0", features = ["serde"] }
 owo-colors = "3.1.0"
 serde = { version = "1.0.130", features = ["derive"] }
 serde_json = "1.0.71"
