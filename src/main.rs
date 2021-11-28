@@ -68,7 +68,10 @@ fn run(opts: &Opts) -> io::Result<()> {
 
     if !has_error {
         println!("{}", "Ok".green());
-        fs::remove_file(path)?;
+        
+        if !opts.keep {
+            fs::remove_file(path)?;
+        }
     }
 
     Ok(())
