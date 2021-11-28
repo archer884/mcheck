@@ -10,7 +10,16 @@ use serde::Deserialize;
 
 #[derive(Clone, Debug, Parser)]
 struct Opts {
-    manifest: String,
+    manifest: Option<String>,
+}
+
+impl Opts {
+    fn manifest_path(&self) -> &Path {
+        self.manifest
+            .as_ref()
+            .map(Path::new)
+            .unwrap_or_else(|| Path::new("manifest.json"))
+    }
 }
 
 #[derive(Debug, Default, Deserialize)]
@@ -30,9 +39,10 @@ fn main() {
 fn run(opts: &Opts) -> io::Result<()> {
     use owo_colors::OwoColorize;
 
-    let target = target_dir(&opts.manifest)?;
-    let manifest = read_manifest(&opts.manifest)?;
-    
+    let path = opts.manifest_path();
+    let target = target_dir(&path)?;
+    let manifest = read_manifest(path)?;
+
     let mut entries: Vec<_> = manifest.entries.into_iter().collect();
     entries.sort();
 
@@ -68,7 +78,7 @@ fn get_actual_hash(path: &Path) -> io::Result<String> {
     Ok(hasher.finalize().to_string())
 }
 
-fn read_manifest(path: &str) -> io::Result<Manifest> {
+fn read_manifest(path: &Path) -> io::Result<Manifest> {
     let manifest = fs::read_to_string(path)?;
     let manifest = serde_json::from_str(&manifest)?;
     Ok(manifest)
